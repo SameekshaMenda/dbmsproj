@@ -1,20 +1,14 @@
-require('dotenv').config();  // Load environment variables
 const { Sequelize } = require('sequelize');
 
-// Database connection using environment variables
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD, 
+    process.env.DB_NAME,    // Database name
+    process.env.DB_USER,    // Database user
+    process.env.DB_PASSWORD, // Database password
     {
-        host: process.env.DB_HOST,
-        dialect: 'mysql',
+        host: process.env.DB_HOST, // Database host
+        dialect: 'mysql',         // Change to your database type if necessary
+        logging: false,           // Disable SQL query logging (optional)
     }
 );
-
-// Test the database connection
-sequelize.authenticate()
-    .then(() => console.log('Database connected successfully'))
-    .catch((err) => console.error('Unable to connect to the database:', err));
 
 module.exports = sequelize;

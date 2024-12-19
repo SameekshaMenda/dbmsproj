@@ -10,48 +10,66 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(''); // Clear previous errors
 
     try {
-      const response = await axios.post('http://localhost:3100/login', {
+      const response = await axios.post('http://localhost:1234/login', {
         cet_number: cetNumber,
         password: password,
       });
 
-      // Store JWT token in localStorage
-      localStorage.setItem('token', response.data.token);
+      // Check if login is successful
+      if (response.data.message === 'Login successful') {
+        // Save student data to local storage (optional)
+        localStorage.setItem('student', JSON.stringify(response.data.student));
 
-      // Redirect to dashboard
-      navigate('/dashboard');
+        // Redirect to Dashboard
+        navigate('/dashboard');
+      }
     } catch (err) {
-      setError('Invalid credentials');
+      setError(err.response?.data?.error || 'Server error. Please try again.');
     }
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', textAlign: 'center' }}>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <div>
+        <div style={{ marginBottom: '10px' }}>
           <label>CET Number</label>
           <input
             type="text"
             value={cetNumber}
             onChange={(e) => setCetNumber(e.target.value)}
             required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
           />
         </div>
-        <div>
+        <div style={{ marginBottom: '10px' }}>
           <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
           />
         </div>
-        <button type="submit">Login</button>
+        <button
+          type="submit"
+          style={{
+            width: '100%',
+            padding: '10px',
+            backgroundColor: '#007BFF',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+          }}
+        >
+          Login
+        </button>
       </form>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
     </div>
   );
 };
