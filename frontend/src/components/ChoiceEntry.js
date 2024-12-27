@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const ChoiceEntry = () => {
   const [branches, setBranches] = useState([]);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize the navigate function
 
   // Fetch branch details
   useEffect(() => {
@@ -21,20 +21,9 @@ const ChoiceEntry = () => {
     fetchBranches();
   }, []);
 
-  // Handle branch selection
-  const handleSelect = async (branch_id) => {
-    try {
-      await axios.post('http://localhost:1234/api/select-branch', { branch_id });
-      alert('Branch selected successfully!');
-      window.location.reload(); // Reload to get updated data
-    } catch (err) {
-      alert(err.response?.data?.error || 'Failed to select branch');
-    }
-  };
-
-  // Navigate to SeatDataAndChoiceEntry page
-  const handleNavigate = () => {
-    navigate('/SeatDataAndChoiceEntry');
+  // Function to navigate after data is fetched or other actions
+  const handleNavigation = () => {
+    navigate('/SeatDataAndChoiceEntry'); // Navigate to the SeatData page
   };
 
   return (
@@ -49,7 +38,7 @@ const ChoiceEntry = () => {
             <th>Total Seats</th>
             <th>Available Seats</th>
             <th>Selected Seats</th>
-            <th>Action</th>
+            <th>Applicants</th>
           </tr>
         </thead>
         <tbody>
@@ -60,44 +49,25 @@ const ChoiceEntry = () => {
               <td>{branch.total_seats}</td>
               <td>{branch.available_seats}</td>
               <td>{branch.selected_seats}</td>
-              {/* <td>
-                <button
-                  onClick={() => handleSelect(branch.branch_id)}
-                  disabled={branch.available_seats <= 0}
-                  style={{
-                    backgroundColor: branch.available_seats > 0 ? '#28a745' : '#ccc',
-                    color: 'white',
-                    border: 'none',
-                    padding: '5px 10px',
-                    cursor: branch.available_seats > 0 ? 'pointer' : 'not-allowed',
-                    borderRadius: '5px',
-                  }}
-                >
-                  Select
-                </button>
-              </td> */}
+              <td>{branch.applicants}</td> {/* Show the number of applicants */}
             </tr>
           ))}
         </tbody>
       </table>
-      
-      {/* Button to navigate to SeatDataAndChoiceEntry Page */}
-      <div style={{ marginTop: '20px' }}>
-        <button
-          onClick={handleNavigate}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px',
-          }}
-        >
-          Go to Seat Data and Choice Entry Page
-        </button>
-      </div>
+      {/* Button to trigger navigation */}
+      <button
+        onClick={handleNavigation}
+        style={{
+          marginTop: '20px',
+          padding: '10px',
+          backgroundColor: '#007BFF',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+        }}
+      >
+        Go to Seat Data and Choice Entry
+      </button>
     </div>
   );
 };
