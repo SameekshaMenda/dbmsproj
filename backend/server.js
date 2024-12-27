@@ -65,7 +65,7 @@ app.use(express.json());
 const pool = mysql.createPool({
     host: 'localhost',  // Use your MySQL host here
     user: 'root',       // Use your MySQL user here
-    password: '4SF22CD036',  // Use your MySQL password here
+    password: 'Sinchana@26',  // Use your MySQL password here
     database: 'kcet_seats',  // Use your MySQL database name here
     waitForConnections: true,
     connectionLimit: 10,
@@ -192,7 +192,7 @@ app.get('/api/branches/withCount', async (req, res) => {
 //     }
 // });
 // Store student choices in the database
-app.post('/api/submitChoices', async (req, res) => {
+  app.post('/api/submitChoices', async (req, res) => {
     try {
       // Extract data from the frontend
       const { choices } = req.body;
@@ -233,3 +233,30 @@ app.listen(PORT, () => {
 });
 
 
+/*app.post('/api/submitChoices', async (req, res) => {
+    try {
+        const { choices } = req.body;
+
+        if (!Array.isArray(choices) || choices.length === 0) {
+            return res.status(400).json({ error: 'Invalid or missing choices' });
+        }
+
+        // Insert each choice with a default "Pending" status
+        const query = 'INSERT INTO student_choices (college_name, branch_name, status) VALUES (?, ?, "Pending")';
+        for (const choice of choices) {
+            const { college, branch } = choice;
+
+            if (!college || !branch) {
+                return res.status(400).json({ error: 'College and branch are required for each choice' });
+            }
+
+            await pool.query(query, [college, branch]);
+        }
+
+        res.status(200).json({ message: 'Choices saved temporarily! Confirm your selection to finalize.' });
+    } catch (err) {
+        console.error('Error saving choices:', err);
+        res.status(500).json({ error: 'Failed to save choices' });
+    }
+});
+*/
