@@ -27,44 +27,66 @@ const ChoiceEntry = () => {
   };
 
   return (
-    <div style={{ margin: '20px auto', textAlign: 'center', maxWidth: '800px' }}>
-      <h2>Choice Entry</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
+    <div style={{ margin: '40px', fontFamily: 'Arial, sans-serif' }}>
+      {/* Align title to the left */}
+      <h2 style={{ fontSize: '3vw', color: '#333', textAlign: 'left' }}>Choice Entry</h2>
+      {error && <p style={{ color: 'red', fontSize: '2vw' }}>{error}</p>}
+
+      {/* Align table to the left */}
+      <table
+        border="1"
+        style={{
+          width: '100%',
+          borderCollapse: 'separate',
+          borderSpacing: '15px',
+          fontSize: '1.2vw',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          borderRadius: '10px',
+          wordWrap: 'break-word',
+          marginTop: '20px',
+          textAlign: 'left', // Align table content to the left
+        }}
+      >
+        <thead style={{ backgroundColor: '#003366', color: 'white' }}>
           <tr>
-            <th>Branch Name</th>
-            <th>College Name</th>
-            <th>Total Seats</th>
-            <th>Available Seats</th>
-            <th>Selected Seats</th>
-            <th>Applicants</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Branch Name</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>College Name</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Total Seats</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Available Seats</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Selected Seats</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Applicants</th>
           </tr>
         </thead>
         <tbody>
           {branches.map((branch) => (
-            <tr key={branch.branch_id}>
-              <td>{branch.branch_name}</td>
-              <td>{branch.college_name}</td>
-              <td>{branch.total_seats}</td>
-              <td>{branch.available_seats}</td>
-              <td>{branch.selected_seats}</td>
-              <td>{branch.applicants}</td> {/* Show the number of applicants */}
+            <tr key={branch.branch_id} style={{ borderBottom: '2px solid #ddd' }}>
+              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.branch_name}</td>
+              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.college_name}</td>
+              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.total_seats}</td>
+              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.available_seats}</td>
+              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.selected_seats}</td>
+              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.applicants}</td> {/* Show the number of applicants */}
             </tr>
           ))}
         </tbody>
       </table>
+
       {/* Button to trigger navigation */}
       <button
         onClick={handleNavigation}
         style={{
           marginTop: '20px',
-          padding: '10px',
-          backgroundColor: '#007BFF',
+          padding: '8px 15px', // Smaller button
+          backgroundColor: '#003366', // Dark blue color
           color: 'white',
           border: 'none',
           borderRadius: '5px',
+          fontSize: '1.2vw', // Adjusted font size for the button
+          cursor: 'pointer',
+          transition: 'background-color 0.3s ease',
         }}
+        onMouseEnter={(e) => (e.target.style.backgroundColor = '#00509E')}
+        onMouseLeave={(e) => (e.target.style.backgroundColor = '#003366')}
       >
         Go to Seat Data and Choice Entry
       </button>

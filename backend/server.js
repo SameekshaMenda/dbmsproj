@@ -1,55 +1,4 @@
-// // const app = require('express')
-// import express from 'express';
-// const app=express()
-// import {getdata} from './dbcode.js'
 
-// app.use(express.json())
-// app.get('/getdata',async (req,res)=>{
-//    const result= await getdata();
-//    res.send(result);
-// })
-// app.get('/case',(req,res)=>{
-//     res.send("hello");
-// })
-
-// app.listen(1234,()=>{
-//     console.log('Server Started');
-// })
-
-
-
-//new code by aditi
-
-// import express from 'express';
-// import { getdata } from './dbcode.js';
-
-// const app = express();
-// app.use(express.json());
-
-// // Endpoint to fetch data
-// app.get('/getdata', async (req, res) => {
-//     try {
-//         const result = await getdata();
-//         res.status(200).send(result);
-//     } catch (error) {
-//         console.error('Error in /getdata:', error.message);
-//         res.status(500).send({ error: 'Failed to fetch data' });
-//     }
-// });
-
-// // Test endpoint
-// app.get('/case', (req, res) => {
-//     res.send('hello');
-// });
-
-// // Start server
-// const PORT = 1234;
-// app.listen(PORT, () => {
-//     console.log(`Server started on http://localhost:${PORT}`);
-// });
-
-
-//new code by me
 
 import express from 'express';
 import cors from 'cors';  // Import CORS middleware
@@ -163,16 +112,16 @@ app.get('/api/branches', async (req, res) => {
 
 
 // API to fetch all branch details
-app.get('/api/branches', async (req, res) => {
-    try {
+// app.get('/api/branches', async (req, res) => {
+//     try {
         
-        const [results] = await pool.query('SELECT * FROM branches');
-        res.json(results);
-    } catch (err) {
-        console.error('Error fetching branch data:', err);
-        res.status(500).json({ error: 'Failed to fetch branch data' });
-    }
-});
+//         const [results] = await pool.query('SELECT * FROM branches');
+//         res.json(results);
+//     } catch (err) {
+//         console.error('Error fetching branch data:', err);
+//         res.status(500).json({ error: 'Failed to fetch branch data' });
+//     }
+// });
 
 // Route to fetch branch data with applied_count
 app.get('/api/branches/withCount', async (req, res) => {
@@ -194,91 +143,81 @@ app.get('/api/branches/withCount', async (req, res) => {
 });
 
 
-// API to update selected seats count
-// app.post('/api/select-branch', async (req, res) => {
-    //     const { branch_id } = req.body; // Use branch_id to identify the branch
-    
-    //     try {
-        //         // Update selected_seats and decrement available_seats
-//         const [result] = await pool.query(
-    //             `UPDATE branches 
-    //              SET selected_seats = selected_seats + 1, 
-    //                  available_seats = available_seats - 1 
-//              WHERE branch_id = ? AND available_seats > 0`,
-//             [branch_id]
-//         );
-
-//         if (result.affectedRows > 0) {
-//             res.json({ message: 'Branch selected successfully' });
-//         } else {
-//             res.status(400).json({ error: 'No available seats for this branch.' });
-//         }
-//     } catch (err) {
-    //         console.error('Error updating seat count:', err);
-//         res.status(500).json({ error: 'Failed to update seat count' });
-//     }
-// });
-// Store student choices in the database
 // POST: Submit choices
 app.post('/api/submitChoices', async (req, res) => {
     const { cet_number, choices } = req.body;
-  
-    try {
-      // Step 1: Validate CET number
-      const [student] = await pool.query('SELECT * FROM students WHERE cet_number = ?', [cet_number]);
-      if (student.length === 0) {
-        return res.status(400).send({ error: 'Invalid CET number' });
-      }
-  
-      // Step 2: Check if choices are already submitted
-      const [existingChoices] = await pool.query('SELECT * FROM student_choices WHERE cet_number = ?', [cet_number]);
-      if (existingChoices.length > 0) {
-        return res.status(400).send({ error: 'Choices already submitted for this CET number' });
-      }
-  
-      // Step 3: Insert choices into the database
-      const insertChoices = choices.map((choice, index) => [
-        cet_number,
-        choice.college_name,
-        choice.branch_name,
-        index + 1 // Priority is based on array index (1-based)
-      ]);
-  
-      await pool.query(
-        'INSERT INTO student_choices (cet_number, college_name, branch_name, priority) VALUES ?',
-        [insertChoices]
-      );
-  
-      // Step 4: Send success response
-      res.send({ message: 'Choices submitted successfully!' });
-    } catch (err) {
-      console.error('Error submitting choices:', err);
-      res.status(500).send({ error: 'Error submitting choices. Please try again later.' });
+    console.log(req.body);
+    if (!cet_number || !choices || choices.length === 0) {
+        return res.status(400).send({ error: 'CET number and choices are required.' });
     }
-  });
-  
-  // GET: Fetch choices for a CET number
-  app.get('/api/getChoices/:cet_number', async (req, res) => {
-    const { cet_number } = req.params;
-  
+
     try {
-      // Fetch choices from the database
-      const [choices] = await pool.query(
-        'SELECT college_name, branch_name, priority FROM student_choices WHERE cet_number = ? ORDER BY priority ASC',
-        [cet_number]
-      );
-  
-      if (choices.length === 0) {
-        return res.status(404).send({ error: 'No choices found for this CET number' });
-      }
-  
-      // Return the fetched choices
-      res.send(choices);
+        // Step 1: Validate CET number
+        const [students] = await pool.query('SELECT * FROM students WHERE cet_number = ?', [cet_number]);
+        if (students.length === 0) {
+            return res.status(400).send({ error: 'Invalid CET number' });
+        }
+
+        // Step 2: Check if choices are already submitted
+        const [existingChoices] = await pool.query('SELECT * FROM student_choices WHERE cet_number = ?', [cet_number]);
+        if (existingChoices.length > 0) {
+            return res.status(400).send({ error: 'Choices already submitted for this CET number' });
+        }
+
+        // Step 3: Insert choices into the database
+        const insertChoices = choices.map((choice, index) => [
+            cet_number,
+            choice.college_name,
+            choice.branch_name,
+            index + 1 // Priority is based on array index (1-based)
+        ]);
+
+        await pool.query(
+            'INSERT INTO student_choices (cet_number, college_name, branch_name, priority) VALUES ?',
+            [insertChoices]
+        );
+
+        // Step 4: Send success response
+        res.send({ message: 'Choices submitted successfully!' });
     } catch (err) {
-      console.error('Error fetching choices:', err);
-      res.status(500).send({ error: 'Error fetching choices. Please try again later.' });
+        console.error('Error submitting choices:', err);
+        res.status(500).send({ error: 'Error submitting choices. Please try again later.' });
     }
-  });
+});
+
+  
+
+// API to fetch choices for a CET number
+app.get('/choices/:cetNumber', async (req, res) => {
+    const cetNumber = req.params.cetNumber;
+
+    // Validate that the cet_number is provided
+    if (!cetNumber) {
+        return res.status(400).send({ error: 'CET Number is required' });
+    }
+
+    try {
+        // Query to fetch student choices based on the CET number
+        const query = `
+            SELECT * FROM student_choices WHERE cet_number = ?
+        `;
+        
+        // Execute the query with cet_number as a parameter
+        const [results] = await pool.query(query, [cetNumber]);
+
+        // If results are found, return them
+        if (results.length > 0) {
+            return res.status(200).json(results);
+        }
+
+        // If no choices are found, send a 404 response
+        res.status(404).json({ message: 'No choices found for the given CET number' });
+    } catch (err) {
+        console.error('Error fetching choices:', err.message);
+        res.status(500).json({ error: 'Failed to fetch choices. Please try again later.' });
+    }
+});
+
   
   
 

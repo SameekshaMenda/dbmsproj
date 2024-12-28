@@ -5,7 +5,7 @@ import Dashboard from './components/Dashboard'; // Ensure the path is correct
 import ChoiceEntry from './components/ChoiceEntry';
 import SeatData from './components/SeatData'; // Fixed: Capitalized the component name
 import AdminDashboard from './components/AdminDashboard';
-
+import SubmittedPage from './components/SubmittedPage';
 
 const App = () => {
   return (
@@ -16,6 +16,7 @@ const App = () => {
         <Route path="/ChoiceEntry" element={<ChoiceEntry />} />
         <Route path="/SeatDataAndChoiceEntry" element={<SeatData />} /> {/* Updated */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/submitted" element={<SubmittedPage />} />
       </Routes>
     </Router>
   );

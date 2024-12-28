@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Dashboard = () => {
   const [studentData, setStudentData] = useState(null);
@@ -43,74 +44,48 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Dashboard</h2>
-      {error && <p style={styles.error}>{error}</p>}
+    <div className="container mt-5" style={{ maxWidth: '2500px' }}>
+      <h2 className="text-center mb-5" style={{ fontSize: '150px', fontWeight: 'bold', color: '#343a40' }}>
+        Dashboard
+      </h2>
+      
+      {error && <p className="text-danger text-center" style={{ fontSize: '80px', padding: '20px' }}>{error}</p>}
 
       {loading ? (
-        <p style={styles.loading}>Loading student details...</p>
+        <p className="text-center text-muted" style={{ fontSize: '80px', padding: '20px' }}>Loading student details...</p>
       ) : studentData ? (
-        <div style={styles.card}>
-          <h3 style={styles.cardHeader}>Student Details</h3>
-          <p><strong>CET Number:</strong> {studentData.cet_number}</p>
-          <p><strong>Name:</strong> {studentData.name || 'N/A'}</p>
-          <p><strong>Rank:</strong> {studentData.rank_number || 'N/A'}</p>
-          <button onClick={handleProceed} style={styles.button}>Proceed</button>
+        <div className="card shadow-lg p-8 mb-5" style={{ borderRadius: '50px', backgroundColor: '#f8f9fa' }}>
+          <h3 className="card-header text-center" style={{ fontSize: '100px', fontWeight: 'bold', color: '#495057' }}>
+            Student Details
+          </h3>
+          <div className="card-body" style={{ fontSize: '70px', padding: '50px' }}>
+            <p><strong>CET Number:</strong> {studentData.cet_number}</p>
+            <p><strong>Name:</strong> {studentData.name || 'N/A'}</p>
+            <p><strong>Rank:</strong> {studentData.rank_number || 'N/A'}</p>
+            <button
+              onClick={handleProceed}
+              className="btn"
+              style={{
+                fontSize: '100px',
+                padding: '60px',
+                backgroundColor: '#004085', // Dark blue button color
+                color: 'white',
+                borderRadius: '30px',
+                border: 'none',
+                transition: 'background-color 0.3s ease'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#003366'} // Darker blue on hover
+              onMouseOut={(e) => e.target.style.backgroundColor = '#004085'} // Original color
+            >
+              Proceed
+            </button>
+          </div>
         </div>
       ) : (
-        <p style={styles.error}>No student details available.</p>
+        <p className="text-center text-danger" style={{ fontSize: '80px', padding: '20px' }}>No student details available.</p>
       )}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    maxWidth: '600px',
-    margin: 'auto',
-    padding: '20px',
-    textAlign: 'center',
-    fontFamily: 'Arial, sans-serif',
-  },
-  header: {
-    fontSize: '24px',
-    color: '#333',
-  },
-  error: {
-    color: 'red',
-    fontSize: '16px',
-  },
-  loading: {
-    color: '#555',
-    fontSize: '18px',
-  },
-  card: {
-    border: '1px solid #ccc',
-    borderRadius: '10px',
-    padding: '20px',
-    marginTop: '20px',
-    backgroundColor: '#f9f9f9',
-  },
-  cardHeader: {
-    fontSize: '20px',
-    marginBottom: '10px',
-    color: '#444',
-  },
-  button: {
-    marginTop: '20px',
-    padding: '10px 20px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    transition: 'background-color 0.3s',
-  },
-};
-
-styles.button[':hover'] = {
-  backgroundColor: '#218838',
 };
 
 export default Dashboard;

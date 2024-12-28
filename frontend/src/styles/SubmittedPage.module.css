@@ -1,0 +1,71 @@
+/* Container for the form */
+.container {
+  background-color: #ffffff; /* White background */
+  padding: 60px; /* Padding adjusted for large form */
+  border-radius: 15px;
+  margin-top: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%; /* Ensure the container fits screen width */
+  overflow-x: auto; /* Allow horizontal scrolling if necessary */
+}
+
+.title {
+  font-size: 6rem;  /* Extremely large title */
+  color: #001f3d;  /* Dark blue color */
+  margin-bottom: 50px;
+}
+
+.strong {
+  color: #001f3d;  /* Dark blue for emphasis */
+}
+
+.table {
+  margin-top: 50px;  /* Increased margin for larger table */
+  font-size: 3rem;  /* Make table content extremely large */
+  width: 100%;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  padding: 30px;  /* Increased padding for extremely large text */
+}
+
+.table th {
+  background-color: #001f3d;  /* Dark blue for headers */
+  color: white;
+}
+
+.table td {
+  background-color: #f8f9fa; /* White background for cells */
+  word-wrap: break-word;  /* Ensure text doesn't overflow */
+  max-width: 250px; /* Prevent text overflow in college name */
+}
+
+.button {
+  background-color: #001f3d;  /* Dark blue */
+  color: white;
+  padding: 30px 60px;  /* Extremely large padding */
+  font-size: 3rem;  /* Extremely large font size */
+  border-radius: 15px;
+  border: none;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #002244; /* Darker shade on hover */
+}
+
+.go-back-button {
+  background-color: #001f3d;  /* Dark blue */
+  color: white;
+  padding: 25px 50px;  /* Large padding */
+  font-size: 3rem;  /* Large font size */
+  border-radius: 15px;
+  border: none;
+  text-decoration: none;
+}
+
+.go-back-button:hover {
+  background-color: #002244; /* Darker shade on hover */
+}
