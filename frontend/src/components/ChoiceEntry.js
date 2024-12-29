@@ -53,8 +53,8 @@ const ChoiceEntry = () => {
             <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>College Name</th>
             <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Total Seats</th>
             <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Available Seats</th>
-            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Selected Seats</th>
-            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Applicants</th>
+          {/*  <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Selected Seats</th>
+            <th style={{ padding: '10px 15px', whiteSpace: 'nowrap' }}>Applicants</th>*/}
           </tr>
         </thead>
         <tbody>
@@ -64,8 +64,8 @@ const ChoiceEntry = () => {
               <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.college_name}</td>
               <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.total_seats}</td>
               <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.available_seats}</td>
-              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.selected_seats}</td>
-              <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.applicants}</td> {/* Show the number of applicants */}
+             {/* <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.selected_seats}</td>
+             {/* <td style={{ padding: '10px 15px', textAlign: 'center', whiteSpace: 'nowrap' }}>{branch.applicants}</td> {/* Show the number of applicants */}
             </tr>
           ))}
         </tbody>

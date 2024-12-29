@@ -37,6 +37,21 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
+  // Function to handle the seat allocation trigger
+  const handleTriggerSeatAllocation = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      // Call the backend API to trigger the seat allocation
+      const response = await axios.post('http://localhost:1234/admin/trigger-seat-allocation');
+      setMessage(response.data.message); // Display success message from backend
+    } catch (err) {
+      setError('Error triggering seat allocation. Please try again later.');
+      console.error(err); // Log the error to the console for debugging
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
@@ -47,6 +62,9 @@ const AdminDashboard = () => {
         </button>
         <button onClick={handleProcessSeatAllotment} disabled={loading}>
           {loading ? 'Processing Seat Allotment...' : 'Process Seat Allotment'}
+        </button>
+        <button onClick={handleTriggerSeatAllocation} disabled={loading}>
+          {loading ? 'Triggering Seat Allocation...' : 'Trigger Seat Allocation'}
         </button>
       </div>
 

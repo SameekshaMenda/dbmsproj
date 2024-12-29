@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import { useNavigate } from 'react-router-dom';
 
 const SeatData = () => {
   const [branches, setBranches] = useState([]);
@@ -8,15 +8,13 @@ const SeatData = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [cetNumber, setCetNumber] = useState('');
-  
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Fetch branches data from the server
   useEffect(() => {
     const fetchBranches = async () => {
       try {
-        const response = await axios.get('http://localhost:1234/api/branches'); // Ensure this endpoint exists in your backend
-        setBranches(response.data); // Save the response data to state
+        const response = await axios.get('http://localhost:1234/api/branches');
+        setBranches(response.data);
       } catch (error) {
         console.error('Error fetching seat data:', error);
       }
@@ -36,12 +34,16 @@ const SeatData = () => {
     setChoices([...choices, { college_name: '', branch_name: '' }]);
   };
 
+  const deleteChoiceRow = (index) => {
+    const updatedChoices = choices.filter((_, idx) => idx !== index);
+    setChoices(updatedChoices);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
     setError('');
-  
-    // Validate input
+
     if (!cetNumber) {
       setError('CET Number is required.');
       return;
@@ -53,7 +55,7 @@ const SeatData = () => {
       setError('All choices must have both College Name and Branch selected.');
       return;
     }
-  
+
     const payload = {
       cet_number: cetNumber.trim(),
       choices: choices.map((choice, index) => ({
@@ -62,24 +64,17 @@ const SeatData = () => {
         priority: index + 1,
       })),
     };
-    console.log('Sending payload:', payload);
-  
+
     try {
       const response = await axios.post('http://localhost:1234/api/submitChoices', payload);
-  
-      // Success response
       setMessage(response.data.message);
       setChoices([{ college_name: '', branch_name: '' }]);
       setCetNumber('');
-      
-      // Navigate to another page after successful submission (e.g., 'confirmation' page)
-      navigate('/submitted', { state: { cetNumber, choices } }); // Pass cetNumber and choices to the next page
+      navigate('/submitted', { state: { cetNumber, choices } });
     } catch (error) {
       console.error('Error submitting choices:', error);
-  
-      // Extract error message from response
       if (error.response && error.response.data && error.response.data.error) {
-        setError(error.response.data.error); // Use the error message from the backend
+        setError(error.response.data.error);
       } else {
         setError('Failed to submit choices. Please try again.');
       }
@@ -101,7 +96,7 @@ const SeatData = () => {
           fontSize: '1.2vw',
         }}
       >
-        <thead style={{ backgroundColor: '#003366', color: 'white' }}> {/* Changed to dark blue */}
+        <thead style={{ backgroundColor: '#003366', color: 'white' }}>
           <tr>
             <th>College Name</th>
             <th>Branch</th>
@@ -153,11 +148,12 @@ const SeatData = () => {
             fontSize: '1.2vw',
           }}
         >
-          <thead style={{ backgroundColor: '#003366', color: 'white' }}> {/* Changed to dark blue */}
+          <thead style={{ backgroundColor: '#003366', color: 'white' }}>
             <tr>
               <th>Priority</th>
               <th>College Name</th>
               <th>Branch</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -210,6 +206,22 @@ const SeatData = () => {
                       ))}
                   </select>
                 </td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => deleteChoiceRow(index)}
+                    style={{
+                      padding: '0.5vw 1vw',
+                      backgroundColor: 'red',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      fontSize: '1vw',
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -219,7 +231,7 @@ const SeatData = () => {
           onClick={addChoiceRow}
           style={{
             padding: '0.8vw 1.5vw',
-            backgroundColor: '#003366', // Dark blue for the "Add Another Choice" button
+            backgroundColor: '#003366',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
@@ -233,7 +245,7 @@ const SeatData = () => {
           type="submit"
           style={{
             padding: '0.8vw 1.5vw',
-            backgroundColor: '#003366', // Dark blue for the "Submit Choices" button
+            backgroundColor: '#003366',
             color: 'white',
             border: 'none',
             borderRadius: '5px',

@@ -45,21 +45,21 @@ const Login = () => {
       className="d-flex justify-content-center align-items-center vh-100 bg-light"
       style={{
         backgroundImage: 'url(/kcet4.avif)', // Path to the image in the public folder
-        backgroundSize: 'cover', // Cover the whole background
-        backgroundPosition: 'center', // Center the background
-        backgroundAttachment: 'fixed', // Fix the background during scrolling
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
       }}
     >
       <div
         className="card shadow-lg p-5"
         style={{
-          width: '100%',  // Full width for responsiveness
-          maxWidth: '1000px', // Increased width for even larger form
-          minWidth: '600px',  // Ensure responsiveness on smaller screens
-          padding: '100px',    // Much larger padding for spacious form
-          borderRadius: '30px', // Rounded corners for a more modern look
-          backgroundColor: 'rgba(255, 255, 255, 0.9)', // Slightly transparent white background
-          border: '3px solid black', // Black border around the card
+          width: '100%',
+          maxWidth: '1000px',
+          minWidth: '600px',
+          padding: '100px',
+          borderRadius: '30px',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          border: '3px solid black',
         }}
       >
         <h2 className="text-center mb-5" style={{ fontSize: '70px', fontWeight: 'bold' }}>
@@ -68,26 +68,24 @@ const Login = () => {
         <div className="d-flex justify-content-center mb-5">
           <button
             onClick={() => setRole('student')}
-            className={`btn ${role === 'student' ? 'btn-dark' : 'btn-outline-dark'} mx-5 px-8 py-5`}
+            className={`btn ${role === 'student' ? 'btn-dark' : 'btn-outline-dark'} mx-5 px-5 py-3`}
             style={{
               fontSize: '36px',
-              padding: '30px',
-              borderRadius: '50px', // More rounded edges for the button
-              backgroundColor: role === 'student' ? '#003366' : '', // Dark blue background for selected button
-              color: 'white', // White text color for better contrast
+              borderRadius: '50px',
+              backgroundColor: role === 'student' ? '#003366' : '',
+              color: role === 'student' ? 'white' : 'black',
             }}
           >
             Student
           </button>
           <button
             onClick={() => setRole('admin')}
-            className={`btn ${role === 'admin' ? 'btn-dark' : 'btn-outline-dark'} mx-5 px-8 py-5`}
+            className={`btn ${role === 'admin' ? 'btn-dark' : 'btn-outline-dark'} mx-5 px-5 py-3`}
             style={{
               fontSize: '36px',
-              padding: '30px',
-              borderRadius: '50px', // More rounded edges for the button
-              backgroundColor: role === 'admin' ? '#003366' : '', // Dark blue background for selected button
-              color: 'white', // White text color for better contrast
+              borderRadius: '50px',
+              backgroundColor: role === 'admin' ? '#003366' : '',
+              color: role === 'admin' ? 'white' : 'black',
             }}
           >
             Admin
@@ -105,14 +103,14 @@ const Login = () => {
               onChange={(e) => setCetNumber(e.target.value)}
               required
               style={{
-                fontSize: '48px', // Increased font size for better visibility
+                fontSize: '48px',
                 padding: '30px',
-                height: '80px', // Very large input fields
+                height: '80px',
               }}
             />
           </div>
           <div className="mb-5">
-            <label className="form-label" style={{ fontSize: '36px', fontWeight: 'bold' }} >
+            <label className="form-label" style={{ fontSize: '36px', fontWeight: 'bold' }}>
               Password
             </label>
             <input
@@ -122,27 +120,26 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               style={{
-                fontSize: '48px', // Increased font size for better visibility
+                fontSize: '48px',
                 padding: '30px',
-                height: '80px', // Very large input fields
+                height: '80px',
               }}
             />
           </div>
           <button
             type="submit"
-            className="btn w-100 h-90 py-5"
+            className="btn w-100 py-3"
             style={{
               fontSize: '48px',
-              padding: '30px',
-              borderRadius: '50px', // More rounded edges for the button
-              backgroundColor: '#003366', // Dark blue background
-              color: 'white', // White text color for better contrast
+              borderRadius: '50px',
+              backgroundColor: '#003366',
+              color: 'white',
             }}
           >
             Login
           </button>
         </form>
-        {error && <p className="text-danger mt-5" style={{ fontSize: '36px' }}>{error}</p>} {/* Larger error message */}
+        {error && <p className="text-danger mt-5" style={{ fontSize: '36px' }}>{error}</p>}
         {role === 'student' && allocatedCollege && (
           <div className="mt-5 text-success" style={{ fontSize: '36px' }}>
             <p>{allocatedCollege}</p>
