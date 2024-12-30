@@ -1,16 +1,14 @@
-//to verify the database connection
-require('dotenv').config(); // Load environment variables
-const sequelize = require('./config/db'); // Adjust the path as necessary
+// test_file.js
+import express from 'express'; // Import Express
+const app = express(); // Initialize the Express app
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Database connected successfully!');
+// Your route definition
+app.get('/test-db', async (req, res) => {
+    res.send('Database connection test successful');
+});
 
-        // Fetch data from the 'students' table
-        const [results] = await sequelize.query('SELECT * FROM Students');
-        console.log('Students:', results); // Log the fetched data
-    } catch (error) {
-        console.error('Unable to connect to the database:', error.message);
-    }
-})();
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

@@ -58,13 +58,21 @@
 import express from 'express';
 import cors from 'cors';  // Import CORS middleware
 import mysql from 'mysql2/promise';  // Import the mysql2 promise-based client
+import bodyParser from 'body-parser';
+//new to connect html
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(cors({
-    origin: 'http://localhost:3000', // Allow only this origin
-}));
+// app.use(cors({
+//     origin: 'http://localhost:3000', // Allow only this origin
+// }));
+app.use(cors()); // Enable all CORS requests
+app.use(bodyParser.json()); 
 app.use(express.json());
-
+app.use(express.static(path.join(__dirname, '../public')));
 // Create MySQL connection pool
 const pool = mysql.createPool({
     host: 'localhost',  // Use your MySQL host here
@@ -120,33 +128,29 @@ app.post('/login', async (req, res) => {
 
 
 // Dashboard endpoint to retrieve CET number, rank, and name details
-app.post('/dashboard', async (req, res) => { 
-    const { cet_number } = req.body;
+app.post('/dashboard', async (req, res) => {
+  const { cet_number } = req.body;
 
-    // Check if cet_number is provided
-    if (!cet_number) {
-      return res.status(400).send({ error: 'CET Number is required' });
+  if (!cet_number) {
+    return res.status(400).send({ error: 'CET Number is required' });
+  }
+
+  try {
+    const query = 'SELECT cet_number, rank_number, name FROM students WHERE cet_number = ?';
+    const [results] = await pool.query(query, [cet_number]);
+
+    if (results.length > 0) {
+      return res.status(200).send({
+        message: 'Student details retrieved successfully',
+        student: results[0],
+      });
     }
 
-    try {
-      // Query to fetch student details
-      const query = 'SELECT cet_number, rank_number, name FROM students WHERE cet_number = ?';
-      const [results] = await pool.query(query, [cet_number]);
-
-      // If student is found, return the details
-      if (results.length > 0) {
-        return res.status(200).send({
-          message: 'Student details retrieved successfully',
-          student: results[0], // Ensure it returns the correct data for this cet_number
-        });
-      }
-
-      // If no student is found, send a 404 response
-      res.status(404).send({ message: 'Student not found' });
-    } catch (error) {
-      console.error('Dashboard Error:', error.message);
-      res.status(500).send({ error: 'Failed to fetch student data. Please try again later.' });
-    }
+    res.status(404).send({ message: 'Student not found' });
+  } catch (error) {
+    console.error('Dashboard Error:', error.message);
+    res.status(500).send({ error: 'Failed to fetch student data. Please try again later.' });
+  }
 });
 
 
