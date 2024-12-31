@@ -128,24 +128,28 @@ app.post('/login', async (req, res) => {
 
 
 // Dashboard endpoint to retrieve CET number, rank, and name details
-app.post('/dashboard', async (req, res) => {
+app.post('/profile', async (req, res) => { 
   const { cet_number } = req.body;
 
+  // Check if cet_number is provided
   if (!cet_number) {
     return res.status(400).send({ error: 'CET Number is required' });
   }
 
   try {
+    // Query to fetch student details
     const query = 'SELECT cet_number, rank_number, name FROM students WHERE cet_number = ?';
     const [results] = await pool.query(query, [cet_number]);
 
+    // If student is found, return the details
     if (results.length > 0) {
       return res.status(200).send({
         message: 'Student details retrieved successfully',
-        student: results[0],
+        student: results[0], // Ensure it returns the correct data for this cet_number
       });
     }
 
+    // If no student is found, send a 404 response
     res.status(404).send({ message: 'Student not found' });
   } catch (error) {
     console.error('Dashboard Error:', error.message);
@@ -169,18 +173,6 @@ app.get('/api/branches', async (req, res) => {
 
 
 
-
-// API to fetch all branch details
-// app.get('/api/branches', async (req, res) => {
-//     try {
-        
-//         const [results] = await pool.query('SELECT * FROM branches');
-//         res.json(results);
-//     } catch (err) {
-//         console.error('Error fetching branch data:', err);
-//         res.status(500).json({ error: 'Failed to fetch branch data' });
-//     }
-// });
 
 // Route to fetch branch data with applied_count
 app.get('/api/branches/withCount', async (req, res) => {

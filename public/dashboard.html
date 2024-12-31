@@ -2,117 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Dashboard | KCET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .result {
-            margin-top: 20px;
-        }
-        .result p {
-            font-size: 18px;
-            margin: 5px 0;
-        }
-        .error {
-            color: red;
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen">
 
-    <div class="container">
-        <h2>Student Dashboard</h2>
-        <form id="cetForm">
-            <label for="cetNumber">Enter CET Number</label>
-            <input type="text" id="cetNumber" name="cetNumber" placeholder="Enter CET Number" required>
-            <button type="submit">Fetch Student Details</button>
-        </form>
+    <div class="w-full h-screen bg-white shadow-xl flex flex-col p-16">
+        <!-- Dashboard Header -->
+        <header class="flex justify-between items-center mb-16">
+            <h1 class="text-6xl font-extrabold text-blue-500">Welcome to your Dashboard</h1>
+            <button id="logoutButton" class="bg-red-500 text-white py-4 px-8 rounded-full hover:bg-red-600 transition-all">Logout</button>
+        </header>
 
-        <div id="result" class="result"></div>
+        <!-- Student Details Section -->
+        <div id="studentDetails" class="bg-blue-100 p-16 rounded-lg shadow-lg">
+            <h2 class="text-4xl font-bold text-gray-800 mb-8">Student Details</h2>
+            <div id="studentInfo" class="text-xl text-gray-700">
+                <p><strong>Name: </strong><span id="studentName"></span></p>
+                <p><strong>CET Number: </strong><span id="studentCetNumber"></span></p>
+                <p><strong>Rank Number: </strong><span id="studentRankNumber"></span></p>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.getElementById('cetForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+        // Fetch student details after successful login
+        window.onload = async function() {
+            const cetNumber = localStorage.getItem('cet_number'); // Get the CET number from local storage
             
-            const cetNumber = document.getElementById('cetNumber').value;
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = ''; // Clear previous results
-
             if (!cetNumber) {
-                resultDiv.innerHTML = '<p class="error">CET Number is required</p>';
+                window.location.href = 'login.html'; // Redirect to login page if no CET number found
                 return;
             }
 
             try {
-                // Connect to the backend (updated URL)
-                const response = await fetch('http://localhost:1234/dashboard', {
+                // Adjust the URL to your backend endpoint
+                const response = await fetch('http://localhost:3000/dashboard', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ cet_number: cetNumber }),
+                    body: JSON.stringify({ cet_number: cetNumber }) // Send CET number to the server
                 });
 
-                const data = await response.json();
+                const result = await response.json();
 
-                if (response.ok) {
-                    const { student } = data;
-                    resultDiv.innerHTML = `
-                        <p><strong>Name:</strong> ${student.name}</p>
-                        <p><strong>CET Number:</strong> ${student.cet_number}</p>
-                        <p><strong>Rank Number:</strong> ${student.rank_number}</p>
-                    `;
+                if (response.status === 200) {
+                    // Success: Display student data
+                    const student = result.student;
+                    document.getElementById('studentName').textContent = student.name;
+                    document.getElementById('studentCetNumber').textContent = student.cet_number;
+                    document.getElementById('studentRankNumber').textContent = student.rank_number;
                 } else {
-                    resultDiv.innerHTML = `<p class="error">${data.error || data.message}</p>`;
+                    // Handle case where student is not found and redirect
+                    window.location.href = 'login.html'; // Redirect to login if no student found
                 }
             } catch (error) {
-                console.error('Error:', error);
-                resultDiv.innerHTML = '<p class="error">Failed to fetch student data. Please try again later.</p>';
+                console.error('Error fetching student details:', error);
+                alert('Error fetching student details. Please try again later.');
             }
+        };
+
+        // Logout functionality
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('cet_number'); // Clear CET number from local storage
+            window.location.href = 'login.html'; // Redirect to login page after logout
         });
     </script>
 

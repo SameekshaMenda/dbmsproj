@@ -121,7 +121,7 @@
                 if (response.status === 200) {
                     // Login successful: Redirect to Dashboard
                     alert('Login successful!');
-                    window.location.href = '/dashboard'; // Redirect to dashboard page after successful login
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard page after successful login
                 } else {
                     errorMessage.classList.remove('hidden');
                     errorMessage.textContent = result.error || 'Invalid credentials. Please try again.';
